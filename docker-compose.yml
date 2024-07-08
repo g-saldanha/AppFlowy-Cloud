@@ -90,6 +90,21 @@ services:
 
   appflowy_cloud:
     restart: on-failure
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.appflowy.rule=Host(`${SUBDOMAIN}.${DOMAIN_NAME}`)
+      - traefik.http.routers.appflowy.tls=true
+      - traefik.http.routers.appflowy.entrypoints=web,websecure
+      - traefik.http.routers.appflowy.tls.certresolver=leresolver
+      - traefik.http.middlewares.appflowy.headers.SSLRedirect=true
+      - traefik.http.middlewares.appflowy.headers.STSSeconds=315360000
+      - traefik.http.middlewares.appflowy.headers.browserXSSFilter=true
+      - traefik.http.middlewares.appflowy.headers.contentTypeNosniff=true
+      - traefik.http.middlewares.appflowy.headers.forceSTSHeader=true
+      - traefik.http.middlewares.appflowy.headers.SSLHost=${DOMAIN_NAME}
+      - traefik.http.middlewares.appflowy.headers.STSIncludeSubdomains=true
+      - traefik.http.middlewares.appflowy.headers.STSPreload=true
+      - traefik.http.routers.appflowy.middlewares=zaphook@docker
     environment:
       - RUST_LOG=${RUST_LOG:-info}
       - APPFLOWY_ENVIRONMENT=production
