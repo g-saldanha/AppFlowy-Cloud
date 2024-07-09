@@ -104,7 +104,7 @@ services:
       - traefik.http.middlewares.appflowy.headers.SSLHost=${DOMAIN_NAME}
       - traefik.http.middlewares.appflowy.headers.STSIncludeSubdomains=true
       - traefik.http.middlewares.appflowy.headers.STSPreload=true
-      - traefik.http.routers.appflowy.middlewares=zaphook@docker
+      - traefik.http.routers.appflowy.middlewares=appflowy@docker
     environment:
       - RUST_LOG=${RUST_LOG:-info}
       - APPFLOWY_ENVIRONMENT=production
